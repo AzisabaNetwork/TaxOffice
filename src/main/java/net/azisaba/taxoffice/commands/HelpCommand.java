@@ -22,8 +22,10 @@ public class HelpCommand implements TaxOfficeCommand {
 
     @Override
     public void execute(@NotNull CommandSender sender, @NotNull String @NotNull [] args) {
-        TaxOfficeCommandHandler.COMMANDS.forEach(command ->
-                sender.sendMessage(ChatColor.AQUA + " /taxoffice " + command.getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + command.getDescription())
-        );
+        TaxOfficeCommandHandler.COMMANDS.forEach(command -> {
+            if (command.hasPermission(sender)) {
+                sender.sendMessage(ChatColor.AQUA + " /taxoffice " + command.getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + command.getDescription());
+            }
+        });
     }
 }

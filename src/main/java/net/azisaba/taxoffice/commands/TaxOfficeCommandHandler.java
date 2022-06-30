@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class TaxOfficeCommandHandler implements TabExecutor {
     public static final List<TaxOfficeCommand> COMMANDS = Arrays.asList(
             new HelpCommand(),
+            new MeCommand(),
             new LookCommand(),
             new GiveCommand(),
             new TakeCommand(),
