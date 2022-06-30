@@ -21,7 +21,10 @@ public interface TaxOfficeCommand {
 
     @NotNull
     default List<String> getSuggestions(@NotNull CommandSender sender, @NotNull String @NotNull [] args) {
-        return getUnfilteredSuggestions(sender, args).stream().filter(s -> s.startsWith(args[args.length - 1])).collect(Collectors.toList());
+        return getUnfilteredSuggestions(sender, args)
+                .stream()
+                .filter(s -> s.toLowerCase().startsWith(args[args.length - 1].toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     @NotNull
