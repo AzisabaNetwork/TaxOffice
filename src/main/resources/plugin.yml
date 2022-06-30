@@ -1,0 +1,9 @@
+name: TaxOffice
+version: 1.0.0
+main: net.azisaba.taxoffice.TaxOffice
+author: Azisaba Network
+depend:
+  - Autorank
+commands:
+  taxoffice:
+    permission: taxoffice.use_command
