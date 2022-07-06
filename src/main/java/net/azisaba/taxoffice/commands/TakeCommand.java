@@ -47,6 +47,7 @@ public class TakeCommand implements TaxOfficeCommand {
                 return;
             }
             profile.takePoints(points);
+            TaxOffice.getPluginLogger().info(sender.getName() + " took " + points + " points from " + profile.name());
             TaxOffice.getInstance().sendMessage(sender, ChatColor.GREEN + "Took " + points + " points from " + profile.name() + ".");
         }, TaxOffice.getInstance().asyncExecutor());
     }

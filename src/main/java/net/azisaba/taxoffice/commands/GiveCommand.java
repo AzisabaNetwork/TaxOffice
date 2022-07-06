@@ -48,6 +48,7 @@ public class GiveCommand implements TaxOfficeCommand {
                 return;
             }
             profile.givePoints(points);
+            TaxOffice.getPluginLogger().info(sender.getName() + " gave " + points + " points to " + profile.name());
             TaxOffice.getInstance().sendMessage(sender, ChatColor.GREEN + "Gave " + points + " points to " + profile.name() + ".");
         }, TaxOffice.getInstance().asyncExecutor());
     }

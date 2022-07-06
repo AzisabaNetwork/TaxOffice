@@ -47,6 +47,7 @@ public class SetCommand implements TaxOfficeCommand {
                 return;
             }
             profile.setPoints(points);
+            TaxOffice.getPluginLogger().info(sender.getName() + " set points of " + profile.name() + " to " + points + " points");
             TaxOffice.getInstance().sendMessage(sender, ChatColor.GREEN + "Set points of " + profile.name() + " to " + points + " points.");
         }, TaxOffice.getInstance().asyncExecutor());
     }
