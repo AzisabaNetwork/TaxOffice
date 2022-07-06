@@ -47,6 +47,10 @@ public class TakeCommand implements TaxOfficeCommand {
                 return;
             }
             profile.takePoints(points);
+            Player player = Bukkit.getPlayer(profile.uuid());
+            if (player != null) {
+                player.sendMessage(ChatColor.GREEN + "You have been taken " + ChatColor.GOLD + points + ChatColor.GREEN + " points.");
+            }
             TaxOffice.getPluginLogger().info(sender.getName() + " took " + points + " points from " + profile.name());
             TaxOffice.getInstance().sendMessage(sender, ChatColor.GREEN + "Took " + points + " points from " + profile.name() + ".");
         }, TaxOffice.getInstance().asyncExecutor());

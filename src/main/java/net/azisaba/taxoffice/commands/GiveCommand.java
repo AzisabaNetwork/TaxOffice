@@ -1,7 +1,6 @@
 package net.azisaba.taxoffice.commands;
 
 import net.azisaba.taxoffice.TaxOffice;
-import net.azisaba.taxoffice.util.PlayerProfile;
 import net.azisaba.taxoffice.util.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,6 +47,10 @@ public class GiveCommand implements TaxOfficeCommand {
                 return;
             }
             profile.givePoints(points);
+            Player player = Bukkit.getPlayer(profile.uuid());
+            if (player != null) {
+                player.sendMessage(ChatColor.GREEN + "You have been given " + ChatColor.GOLD + points + ChatColor.GREEN + " points.");
+            }
             TaxOffice.getPluginLogger().info(sender.getName() + " gave " + points + " points to " + profile.name());
             TaxOffice.getInstance().sendMessage(sender, ChatColor.GREEN + "Gave " + points + " points to " + profile.name() + ".");
         }, TaxOffice.getInstance().asyncExecutor());
