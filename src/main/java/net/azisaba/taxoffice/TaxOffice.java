@@ -51,8 +51,16 @@ public class TaxOffice extends JavaPlugin {
             throw new RuntimeException(e);
         }
 
-        // hook to Autorank
-        RequirementBuilder.registerRequirement("taxoffice", TaxRequirement.class);
+        // hook to autorank to register requirement
+        try {
+            if (Bukkit.getPluginManager().isPluginEnabled("Autorank")) {
+                // hook to Autorank
+                RequirementBuilder.registerRequirement("taxoffice", TaxRequirement.class);
+            }
+        } catch (Throwable t) {
+            getLogger().warning("Failed to hook to Autorank");
+            t.printStackTrace();
+        }
 
         // register command
         Objects.requireNonNull(getCommand("taxoffice")).setExecutor(new TaxOfficeCommandHandler());

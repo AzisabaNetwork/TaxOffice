@@ -1,12 +1,17 @@
 plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "7.1.2"
+    `maven-publish`
 }
 
 group = "net.azisaba"
-version = "1.0.1-SNAPSHOT"
+version = "1.0.2-SNAPSHOT"
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+    withJavadocJar()
+    withSourcesJar()
+}
 
 repositories {
     mavenCentral()
@@ -28,5 +33,32 @@ tasks {
     shadowJar {
         relocate("org.mariadb.jdbc", "net.azisaba.taxoffice.libs.org.mariadb.jdbc")
         relocate("com.zaxxer.hikari", "net.azisaba.taxoffice.libs.com.zaxxer.hikari")
+    }
+}
+
+val javaComponent = components["java"] as AdhocComponentWithVariants
+javaComponent.withVariantsFromConfiguration(configurations["sourcesElements"]) {
+    skip()
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "repo"
+            credentials(PasswordCredentials::class)
+            url = uri(
+                if (project.version.toString().endsWith("SNAPSHOT"))
+                    project.findProperty("deploySnapshotURL") ?: System.getProperty("deploySnapshotURL", "")
+                else
+                    project.findProperty("deployReleasesURL") ?: System.getProperty("deployReleasesURL", "")
+            )
+        }
+    }
+
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+            artifact(tasks.getByName("sourcesJar"))
+        }
     }
 }
