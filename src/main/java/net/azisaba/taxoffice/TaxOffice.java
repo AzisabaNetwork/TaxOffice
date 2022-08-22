@@ -2,6 +2,7 @@ package net.azisaba.taxoffice;
 
 import me.armar.plugins.autorank.pathbuilder.builders.RequirementBuilder;
 import net.azisaba.taxoffice.autorank.TaxRequirement;
+import net.azisaba.taxoffice.commands.OnTimeToTaxCommandHandler;
 import net.azisaba.taxoffice.commands.TaxOfficeCommandHandler;
 import net.azisaba.taxoffice.manager.CachedPointsManager;
 import net.azisaba.taxoffice.manager.PointsManager;
@@ -30,6 +31,7 @@ public class TaxOffice extends JavaPlugin {
     private DatabaseConfig databaseConfig;
     private int maximumPoints;
     private String autorankRequirementDescription;
+    private String ottDisplayName;
 
     private final CachedPointsManager pointsManager = new CachedPointsManager(new PointsManager());
 
@@ -42,6 +44,7 @@ public class TaxOffice extends JavaPlugin {
         saveDefaultConfig();
         this.databaseConfig = new DatabaseConfig(Objects.requireNonNull(getConfig().getConfigurationSection("database"), "database configuration is missing"));
         this.autorankRequirementDescription = getConfig().getString("autorank-requirement-description", "Pay at least %d points to the tax office");
+        this.ottDisplayName = getConfig().getString("ott-display-name", null);
         loadAdditionalConfig();
 
         // load database
@@ -64,6 +67,9 @@ public class TaxOffice extends JavaPlugin {
 
         // register command
         Objects.requireNonNull(getCommand("taxoffice")).setExecutor(new TaxOfficeCommandHandler());
+        if (ottDisplayName != null) {
+            Objects.requireNonNull(getCommand("ottt")).setExecutor(new OnTimeToTaxCommandHandler());
+        }
     }
 
     private void loadAdditionalConfig() {
@@ -183,5 +189,10 @@ public class TaxOffice extends JavaPlugin {
     @NotNull
     public String getAutorankRequirementDescription() {
         return autorankRequirementDescription;
+    }
+
+    @Nullable
+    public String getOttDisplayName() {
+        return ottDisplayName;
     }
 }

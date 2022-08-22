@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "net.azisaba"
-version = "1.0.2-SNAPSHOT"
+version = "1.1.0-SNAPSHOT"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(8))
@@ -30,6 +30,10 @@ dependencies {
 }
 
 tasks {
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+
     shadowJar {
         relocate("org.mariadb.jdbc", "net.azisaba.taxoffice.libs.org.mariadb.jdbc")
         relocate("com.zaxxer.hikari", "net.azisaba.taxoffice.libs.com.zaxxer.hikari")
