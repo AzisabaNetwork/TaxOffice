@@ -16,13 +16,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 public class OnTimeToTaxCommandHandler implements TabExecutor {
-    private static final Set<UUID> confirm = new HashSet<>();
+    private static final int COOLTIME_DURATION = 5 * 1000;
+    private final Map<UUID, Long> coolTime = new HashMap<>();
+    private final Set<UUID> confirm = new HashSet<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -30,9 +34,13 @@ public class OnTimeToTaxCommandHandler implements TabExecutor {
             sender.sendMessage("This command can only be used in-game.");
             return true;
         }
+        Player player = (Player) sender;
+        if (checkCoolTime(player.getUniqueId())) {
+            sender.sendMessage(ChatColor.RED + "クールタイム中です。数秒程度時間を開けてもう一度試してください。");
+            return true;
+        }
         Set<Integer> slots = new HashSet<>();
         int amount = 0;
-        Player player = (Player) sender;
         Inventory inventory = player.getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {
             ItemStack item = inventory.getItem(i);
@@ -83,5 +91,23 @@ public class OnTimeToTaxCommandHandler implements TabExecutor {
         }
         String displayName = ChatColor.translateAlternateColorCodes('&', rawDisplayName);
         return meta.hasDisplayName() && meta.getDisplayName().equals(displayName);
+    }
+
+    /**
+     * Checks the cooltime state of the player.
+     * @param uuid the uuid to check
+     * @return true if cooltime is still not yet elapsed; false otherwise
+     */
+    private boolean checkCoolTime(UUID uuid){
+        if (coolTime.containsKey(uuid)) {
+            if (System.currentTimeMillis() - coolTime.get(uuid) > COOLTIME_DURATION) {
+                coolTime.remove(uuid);
+                return false;
+            } else {
+                return true;
+            }
+        }
+        coolTime.put(uuid, System.currentTimeMillis());
+        return false;
     }
 }
