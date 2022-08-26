@@ -50,9 +50,9 @@ public class OnTimeToTaxCommandHandler implements TabExecutor {
             for (int slot : slots) {
                 inventory.setItem(slot, null);
             }
+            TaxOffice.getInstance().getPointsManager().givePoints(player.getUniqueId(), amount * 10L);
             sender.sendMessage(ChatColor.GREEN + "チケット" + ChatColor.GOLD + amount + ChatColor.GREEN + "枚を奉納しました。");
             sender.sendMessage(ChatColor.GREEN + "現在の所持ポイントは" + ChatColor.GOLD + "/taxoffice me" + ChatColor.GREEN + "で表示できます。");
-            return true;
         } else {
             confirm.add(player.getUniqueId());
             sender.sendMessage(ChatColor.GREEN + "チケット" + ChatColor.GOLD + amount + ChatColor.GREEN + "枚を奉納しますか？");
