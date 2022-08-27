@@ -35,10 +35,6 @@ public class OnTimeToTaxCommandHandler implements TabExecutor {
             return true;
         }
         Player player = (Player) sender;
-        if (checkCoolTime(player.getUniqueId())) {
-            sender.sendMessage(ChatColor.RED + "クールタイム中です。数秒程度時間を開けてもう一度試してください。");
-            return true;
-        }
         Set<Integer> slots = new HashSet<>();
         int amount = 0;
         Inventory inventory = player.getInventory();
@@ -54,6 +50,10 @@ public class OnTimeToTaxCommandHandler implements TabExecutor {
             return true;
         }
         if (confirm.contains(player.getUniqueId())) {
+            if (checkCoolTime(player.getUniqueId())) {
+                sender.sendMessage(ChatColor.RED + "クールタイム中です。数秒程度時間を開けてもう一度試してください。");
+                return true;
+            }
             confirm.remove(player.getUniqueId());
             for (int slot : slots) {
                 inventory.setItem(slot, null);

@@ -1,5 +1,5 @@
 name: TaxOffice
-version: 1.0.2
+version: 1.1.1
 main: net.azisaba.taxoffice.TaxOffice
 author: Azisaba Network
 softdepend:
