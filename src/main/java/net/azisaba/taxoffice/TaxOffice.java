@@ -70,6 +70,9 @@ public class TaxOffice extends JavaPlugin {
         if (ottDisplayName != null) {
             Objects.requireNonNull(getCommand("ottt")).setExecutor(new OnTimeToTaxCommandHandler());
         }
+
+        // clear cache every minute
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, pointsManager::clearCache, 20 * 60, 20 * 60);
     }
 
     private void loadAdditionalConfig() {
